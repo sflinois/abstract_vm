@@ -55,7 +55,7 @@ IOperand const *	OperandFactory::createInt32(std::string const &value) const{
 IOperand const *	OperandFactory::createFloat(std::string const &value) const{
 	double val = std::atof(value.c_str());
 
-	if (val < __FLT_MIN__ || val > __FLT_MAX__)
+	if (val < FLT_MIN|| val > FLT_MAX)
 		throw std::out_of_range("EXCEPTION: int8 out of range");
 	return new Operand<float>(static_cast<float>(val));
 }

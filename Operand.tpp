@@ -16,6 +16,7 @@
 #include "IOperand.hpp"
 #include "OperandFactory.hpp"
 #include <iostream>
+#include <cmath>
 
 template <typename T>
 class Operand : public IOperand
@@ -46,9 +47,9 @@ class Operand : public IOperand
 		opType = this->_type > rhs.getType() ? this->_type : rhs.getType();
 		rhs_v = std::atof(rhs.toString().c_str());
 
-		if ((this->_value > 0) && (rhs_v > __DBL_MAX__ - this->_value)) /* `a + this->_value` would overflow */
+		if ((rhs_v > 0) && (this->_value > DBL_MAX - rhs_v)) /* `a + this->_value` would overflow */
 			throw std::out_of_range("EXCEPTION: double out of range (overflow)");
-		else if ((this->_value < 0) && (rhs_v < __DBL_MIN__ - this->_value)) /* `a + this->_value` would underflow */
+		else if ((rhs_v < 0) && (this->_value < DBL_MIN - rhs_v)) /* `a + this->_value` would underflow */
 			throw std::out_of_range("EXCEPTION: double out of range (underflow)");
 
 		return (facto.createOperand(opType, std::to_string(this->_value + rhs_v)));
@@ -62,11 +63,10 @@ class Operand : public IOperand
 		opType = this->_type > rhs.getType() ? this->_type : rhs.getType();
 		rhs_v = std::atof(rhs.toString().c_str());
 
-		if ((this->_value < 0) && (rhs_v > __DBL_MAX__ + this->_value)) /* `a - this->_value` would overflow */
+		if ((rhs_v < 0) && (this->_value > DBL_MAX + rhs_v)) /* `a - this->_value` would overflow */
 			throw std::out_of_range("EXCEPTION: double out of range (overflow)");
-		else if ((this->_value > 0) && (rhs_v < __DBL_MIN__ + this->_value)) /* `a - this->_value` would underflow */
+		else if ((rhs_v > 0) && (this->_value < DBL_MIN + rhs_v)) /* `a - this->_value` would underflow */
 			throw std::out_of_range("EXCEPTION: double out of range (underflow)");
-
 		return (facto.createOperand(opType, std::to_string(this->_value - rhs_v)));
 	}
 	IOperand const *operator*(IOperand const &rhs) const
@@ -78,14 +78,14 @@ class Operand : public IOperand
 		opType = this->_type > rhs.getType() ? this->_type : rhs.getType();
 		rhs_v = std::atof(rhs.toString().c_str());
 
-		if (this->_value > 0 && rhs_v > __DBL_MAX__ / this->_value) /* `rhs_v * this->_value` would overflow */
+		if (rhs_v > 0 && this->_value > DBL_MAX / rhs_v) /* `rhs_v * this->_value` would overflow */
 			throw std::out_of_range("EXCEPTION: double out of range (overflow)");
-		if (this->value > 0 && rhs_v < __DBL_MIN__ / this->_value) /* `rhs_v * this->_value` would underflow */
+		if (rhs_v > 0 && this->_value < DBL_MIN / rhs_v) /* `rhs_v * this->_value` would underflow */
 			throw std::out_of_range("EXCEPTION: double out of range (underflow)");
 		// there may be need to check for -1 for two's complement machines
-		if ((rhs_v == -1) && (this->_value == __DBL_MIN__)) /* `rhs_v * this->_value` can overflow */
+		if ((rhs_v == -1) && (this->_value == DBL_MIN)) /* `rhs_v * this->_value` can overflow */
 			throw std::out_of_range("EXCEPTION: double out of range (overflow)");
-		if ((this->_value == -1) && (rhs_v == __DBL_MIN__)) /* `rhs_v * this->_value` (or `rhs_v / this->_value`) can overflow */
+		if ((this->_value == -1) && (rhs_v == DBL_MIN)) /* `rhs_v * this->_value` (or `rhs_v / this->_value`) can overflow */
 			throw std::out_of_range("EXCEPTION: double out of range (underflow)");
 
 		return (facto.createOperand(opType, std::to_string(this->_value * rhs_v)));
@@ -99,12 +99,12 @@ class Operand : public IOperand
 		opType = this->_type > rhs.getType() ? this->_type : rhs.getType();
 		rhs_v = std::atof(rhs.toString().c_str());
 
-		if ((this->_value > 0) && (rhs_v > __DBL_MAX__ - this->_value)) /* `a + this->_value` would overflow */
+		if ((rhs_v > 0) && (this->_value > DBL_MAX - rhs_v)) /* `a + this->_value` would overflow */
 			throw std::out_of_range("EXCEPTION: double out of range (overflow)");
-		else if ((this->_value < 0) && (rhs_v < __DBL_MAX__ - this->_value)) /* `a + this->_value` would underflow */
+		else if ((rhs_v < 0) && (this->_value < DBL_MAX - rhs_v)) /* `a + this->_value` would underflow */
 			throw std::out_of_range("EXCEPTION: double out of range (underflow)");
 
-		return (facto.createOperand(opType, std::to_string(this->_value / rhs_v)));
+		return (facto.createOperand(opType, std::to_string( this->_value / rhs_v)));
 	}
 	IOperand const *operator%(IOperand const &rhs) const
 	{
@@ -115,7 +115,7 @@ class Operand : public IOperand
 		opType = this->_type > rhs.getType() ? this->_type : rhs.getType();
 		rhs_v = std::atof(rhs.toString().c_str());
 
-		return (facto.createOperand(opType, std::to_string(this->_value % rhs_v)));
+		return (facto.createOperand(opType, std::to_string(fmod(this->_value, rhs_v))));
 	}
 
 	//toString

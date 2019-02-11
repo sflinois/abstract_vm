@@ -15,6 +15,11 @@
 
 # include <string>
 
+# define  FLT_MAX __FLT_MAX__
+# define  FLT_MIN __FLT_MAX__*-1
+# define  DBL_MAX __DBL_MAX__
+# define  DBL_MIN __DBL_MAX__*-1
+
 enum eOperandType {
 	Int8,
 	Int16,

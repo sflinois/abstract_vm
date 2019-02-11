@@ -19,8 +19,22 @@ int		main(int argc, char **argv){
 	(void)argv;
 	OperandFactory	factory;
 	IOperand const	*op1;
+	IOperand const	*op2;
+	IOperand const	*op3;
 
-	op1 = factory.createOperand(Int8, "10");
+	op1 = factory.createOperand(Int8, "3");
+	op2 = factory.createOperand(Int8, "8");
 	std::cout << op1->toString() << " -- " << op1->getPrecision() << " " << op1->getType() << std::endl;
+	std::cout << op2->toString() << " -- " << op2->getPrecision() << " " << op2->getType() << std::endl;
+	op3 = *op1 + *op2;
+	std::cout << op3->toString() << " -- " << op3->getPrecision() << " " << op3->getType() << std::endl;
+	op3 = *op1 - *op2;
+	std::cout << op3->toString() << " -- " << op3->getPrecision() << " " << op3->getType() << std::endl;
+	op3 = *op1 * *op2;
+	std::cout << op3->toString() << " -- " << op3->getPrecision() << " " << op3->getType() << std::endl;
+	op3 = *op1 / *op2;
+	std::cout << op3->toString() << " -- " << op3->getPrecision() << " " << op3->getType() << std::endl;
+	op3 = *op1 % *op2;
+	std::cout << op3->toString() << " -- " << op3->getPrecision() << " " << op3->getType() << std::endl;
 	return (0);
 }
