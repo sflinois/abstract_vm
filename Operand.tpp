@@ -6,7 +6,7 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/07 17:01:05 by sflinois          #+#    #+#             */
-/*   Updated: 2019/02/08 17:13:36 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/02/12 18:29:32 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ class Operand : public IOperand
 
 	//Constructor
 	Operand(T value);
+	void	
 
 	//Destructor
 	~Operand()
@@ -99,6 +100,8 @@ class Operand : public IOperand
 		opType = this->_type > rhs.getType() ? this->_type : rhs.getType();
 		rhs_v = std::atof(rhs.toString().c_str());
 
+		if (rhs_v == 0)
+			throw std::overflow_error("Division by 0");
 		if ((rhs_v > 0) && (this->_value > DBL_MAX - rhs_v)) /* `a + this->_value` would overflow */
 			throw std::out_of_range("EXCEPTION: double out of range (overflow)");
 		else if ((rhs_v < 0) && (this->_value < DBL_MAX - rhs_v)) /* `a + this->_value` would underflow */
@@ -115,7 +118,17 @@ class Operand : public IOperand
 		opType = this->_type > rhs.getType() ? this->_type : rhs.getType();
 		rhs_v = std::atof(rhs.toString().c_str());
 
+		if (rhs_v == 0)
+			throw std::overflow_error("Division by 0");
+
 		return (facto.createOperand(opType, std::to_string(fmod(this->_value, rhs_v))));
+	}
+
+	bool			operator==(IOperand const &rhs) const
+	{
+		if (this->_type == rhs.getType() && !this->toString().compare(rhs.toString()))
+			return true;
+		return false;
 	}
 
 	//toString

@@ -6,18 +6,18 @@
 #    By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/07 10:40:24 by sflinois          #+#    #+#              #
-#    Updated: 2019/02/08 15:28:34 by sflinois         ###   ########.fr        #
+#    Updated: 2019/02/12 13:49:58 by sflinois         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = abstract_vm
 
 SRC_PATH = ./srcs
-SRC_NAME = main.cpp OperandFactory.cpp Operand.cpp
+SRC_NAME = main.cpp OperandFactory.cpp Operand.cpp Vm.cpp
 OBJ_PATH = objs
 
 CC = clang++
-CC_FLAGS = -Wall -Werror -Wextra
+CC_FLAGS = -Wall -Werror -Wextra -Wno-c++11-extensions
 
 OBJ_NAME = $(SRC_NAME:.cpp=.o)
 
