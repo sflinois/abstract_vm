@@ -6,7 +6,7 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/07 17:01:05 by sflinois          #+#    #+#             */
-/*   Updated: 2019/02/12 18:29:32 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/02/13 10:04:15 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ class Operand : public IOperand
 
 	//Constructor
 	Operand(T value);
-	void	
 
 	//Destructor
 	~Operand()

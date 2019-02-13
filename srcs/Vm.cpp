@@ -6,7 +6,7 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 10:11:01 by sflinois          #+#    #+#             */
-/*   Updated: 2019/02/12 11:10:51 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/02/13 14:50:27 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ Vm::Vm() {
 Vm::~Vm() {
 
 }
+
+//stack functions
 
 void	print_op(IOperand const * op){
 	std::cout << op->toString() << std::endl;

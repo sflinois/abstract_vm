@@ -6,18 +6,18 @@
 #    By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/07 10:40:24 by sflinois          #+#    #+#              #
-#    Updated: 2019/02/12 13:49:58 by sflinois         ###   ########.fr        #
+#    Updated: 2019/02/13 14:53:14 by sflinois         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = abstract_vm
 
 SRC_PATH = ./srcs
-SRC_NAME = main.cpp OperandFactory.cpp Operand.cpp Vm.cpp
+SRC_NAME = main.cpp OperandFactory.cpp Operand.cpp Vm.cpp LexerParser.cpp
 OBJ_PATH = objs
 
 CC = clang++
-CC_FLAGS = -Wall -Werror -Wextra -Wno-c++11-extensions
+CC_FLAGS = -Wall -Werror -Wextra -std=c++11
 
 OBJ_NAME = $(SRC_NAME:.cpp=.o)
 
