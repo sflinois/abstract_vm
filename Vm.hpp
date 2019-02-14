@@ -6,14 +6,14 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 10:05:22 by sflinois          #+#    #+#             */
-/*   Updated: 2019/02/13 14:49:31 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/02/14 15:35:59 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VM_HPP
 #define VM_HPP
 
-# include <vector>
+# include <list>
 # include <regex>
 # include "IOperand.hpp"
 # include "OperandFactory.hpp"
@@ -40,8 +40,8 @@ class Vm {
 		Vm(Vm const &src); 
 		Vm	&operator=(Vm const &rhs);
 
-		std::vector<Token>				_tkn_v;
-		std::vector<IOperand const *>	_stack;
+		std::list<Token>				_tkn_v;
+		std::list<IOperand const *>	_stack;
 };
 
 #endif

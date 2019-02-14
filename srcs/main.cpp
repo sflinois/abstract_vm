@@ -6,7 +6,7 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/06 10:32:52 by sflinois          #+#    #+#             */
-/*   Updated: 2019/02/13 14:52:44 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/02/14 15:41:33 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,21 +20,23 @@
 
 int		main(int argc, char **argv){
 
-	LexerParser			pl;
+	LexerParser			lp;
 	Vm					vm;
 	std::list<Token>	lst;
-	std::ifstream		file;
-	
+	std::ifstream		file; 
+
 	if (argc > 1)
 	{
 		file.open(argv[1]);
 		if (file.fail())
-			std::cerr << "Error: " << std::strerror(errno);
+			std::cerr << "Error: " << std::strerror(errno) << std::endl;
 		else
-			pl.pars_entry(file);
+			lp.pars_entry(file);
 	} else {
-		pl.pars_entry(std::cin);
+		lp.setIsCin();
+		lp.pars_entry(std::cin);
 	}
+
 
 	return (0);
 }
