@@ -6,7 +6,7 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/06 10:32:52 by sflinois          #+#    #+#             */
-/*   Updated: 2019/02/14 15:41:33 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/02/18 12:12:07 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 #include <iostream>
 #include <regex>
 #include <list>
+
+#include <iomanip>
 
 int		main(int argc, char **argv){
 
@@ -41,5 +43,6 @@ int		main(int argc, char **argv){
 	}
 
 	if (!lp.getIsErrors())
+		vm.start_vm(lp.getTknLst());
 	return (0);
 }

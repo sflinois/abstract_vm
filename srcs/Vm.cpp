@@ -6,7 +6,7 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 10:11:01 by sflinois          #+#    #+#             */
-/*   Updated: 2019/02/14 14:48:52 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/02/18 13:29:01 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,23 @@ Vm::Vm() {
 
 Vm::~Vm() {
 
+}
+
+
+void	Vm::start_vm(std::list<Token> tkn_lst){
+	this->_tkn_v = tkn_lst;
+	while(!this->_tkn_v.empty() && this->_tkn_v.front().cmd != "exit"){
+		if (Vm::opFncMap.find(this->_tkn_v.front().cmd) != Vm::opFncMap.end())
+			Vm::opFncMap[this->_tkn_v.front().cmd];
+		else if	(Vm::opFncMapArg.find(this->_tkn_v.front().cmd) != Vm::opFncMapArg.end())
+			;
+	}
+	
+	if (!this->_tkn_v.empty())
+		this->_tkn_v.pop_front();
+	for(Token tkn : this->_tkn_v){
+		std::cout << tkn.cmd << " | " << tkn.type << " | " << tkn.value << std::endl;
+	}
 }
 
 //stack functions
@@ -122,7 +139,7 @@ void	Vm::mod(){
 	this->_stack.push_back(tmp);
 }
 
-void	Vm::assertvm(eOperandType type, std::string const &value) const{
+void	Vm::assert(eOperandType type, std::string const &value){
 	OperandFactory	facto;
 
 	if (this->_stack.back() == facto.createOperand(type, value))
@@ -132,14 +149,25 @@ void	Vm::assertvm(eOperandType type, std::string const &value) const{
 	
 }
 
-void	Vm::dump() const{
+void	Vm::dump(){
 	std::for_each(this->_stack.begin(), this->_stack.end(), print_op);
 }
 
-void	Vm::print() const{
+void	Vm::print(){
 	print_op(this->_stack.back());
 }
 
 void	Vm::exit(){
 
 }
+
+typedef void (Vm::*opFunc) (void);
+std::map<std::string, opFunc> Vm::opFncMap = {
+	{"pop", &Vm::pop}, {"add", &Vm::add}, {"sub", &Vm::sub},
+	{"mul", &Vm::mul}, {"div", &Vm::div}, {"mod", &Vm::mod},
+	{"dump", &Vm::dump}, {"print", &Vm::print}, {"exit", &Vm::exit}
+};
+typedef void (Vm::*opFuncArg) (eOperandType type, std::string const &value);
+std::map<std::string, opFuncArg> Vm::opFncMapArg = {
+	{"push", &Vm::push}, {"assert", &Vm::assert}
+};

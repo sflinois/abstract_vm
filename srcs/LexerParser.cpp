@@ -6,7 +6,7 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 10:14:27 by sflinois          #+#    #+#             */
-/*   Updated: 2019/02/14 15:59:34 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/02/18 11:42:49 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void			LexerParser::handle_error(std::cmatch lexer_tkn, std::string line, int i_
 		}
 		this->_is_error = true;
 	}
-	else if ((lexer_tkn.size() == 4 && lexer_tkn[3].length() > 0)){
+	else if ((lexer_tkn.size() == 4 && lexer_tkn[3].length() > 0) && (std::strcmp(lexer_tkn[1].str().c_str(), ";;") || this->_is_cin)){
 		this->_errors << "line " << i_line << "\t> " << line << std::endl;
 		this->_errors << "Syntax error: wrong param after command at line " << i_line << std::endl;
 		this->_is_error = true;
@@ -102,9 +102,6 @@ void			LexerParser::handle_error(std::cmatch lexer_tkn, std::string line, int i_
 			this->_errors << " Valid type formating is " << lexer_tkn[2] << "([-]?[0..9]+)" << std::endl;
 		this->_is_error = true;		
 	}
-	this->_errors << std::endl;	
-
-
 }
 
 void			LexerParser::pars_tkn(std::cmatch lexer_tkn, std::string line, int i_line){
@@ -131,7 +128,8 @@ void			LexerParser::pars_tkn(std::cmatch lexer_tkn, std::string line, int i_line
 		tkn.type = Int8;
 		tkn.value = "0";
 	}
-	this->_tkn_lst.push_front(tkn);
+	if (std::strcmp(lexer_tkn[1].str().c_str(), ";;") && std::strcmp(lexer_tkn[1].str().c_str(), ""))
+		this->_tkn_lst.push_front(tkn);
 	// std::cout << "the matches were: " << line << std::endl;
 	// for (unsigned i=0; i<lexer_tkn.size(); ++i) {
 	// 	std::cout << "[" << lexer_tkn[i] << "] ";
