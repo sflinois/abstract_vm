@@ -25,6 +25,13 @@ LexerParser::LexerParser() : _is_cin(false), _is_error(false) {
 LexerParser::~LexerParser() {
 }
 
+std::list<Token>	LexerParser::getTknLst(void) const{
+	return(this->_tkn_lst);
+}
+bool	LexerParser::getIsErrors(void) const{
+	return(this->_is_error);
+}
+
 void	LexerParser::setIsCin(void){
 	this->_is_cin = true;
 }

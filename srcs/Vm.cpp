@@ -122,7 +122,7 @@ void	Vm::mod(){
 	this->_stack.push_back(tmp);
 }
 
-void	Vm::assert(eOperandType type, std::string const &value) const{
+void	Vm::assertvm(eOperandType type, std::string const &value) const{
 	OperandFactory	facto;
 
 	if (this->_stack.back() == facto.createOperand(type, value))

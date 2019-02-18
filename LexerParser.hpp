@@ -30,8 +30,10 @@ class LexerParser {
 		LexerParser();
 		~LexerParser(); 
 
-		void	pars_entry(std::istream& in);
-		void	setIsCin(void);
+		void				pars_entry(std::istream& in);
+		std::list<Token>	getTknLst(void) const;
+		bool				getIsErrors(void) const;
+		void				setIsCin(void);
 
 	private:
 		LexerParser(LexerParser const &src); 

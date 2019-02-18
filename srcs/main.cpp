@@ -36,7 +36,10 @@ int		main(int argc, char **argv){
 		lp.setIsCin();
 		lp.pars_entry(std::cin);
 	}
+	for(Token tkn : lp.getTknLst()){
+		std::cout << tkn.cmd << " | " << tkn.type << " | " << tkn.value << std::endl;
+	}
 
-
+	if (!lp.getIsErrors())
 	return (0);
 }
