@@ -26,15 +26,17 @@ void	Vm::start_vm(std::list<Token> tkn_lst){
 	this->_tkn_v = tkn_lst;
 	while(!this->_tkn_v.empty() && this->_tkn_v.front().cmd != "exit"){
 		if (Vm::opFncMap.find(this->_tkn_v.front().cmd) != Vm::opFncMap.end())
-			Vm::opFncMap[this->_tkn_v.front().cmd];
+			(this->*(Vm::opFncMap[this->_tkn_v.front().cmd]))();
 		else if	(Vm::opFncMapArg.find(this->_tkn_v.front().cmd) != Vm::opFncMapArg.end())
-			;
+			(this->*(Vm::opFncMapArg[this->_tkn_v.front().cmd]))(this->_tkn_v.front().type, this->_tkn_v.front().value);
+		this->_tkn_v.pop_front();
 	}
 	
-	if (!this->_tkn_v.empty())
-		this->_tkn_v.pop_front();
-	for(Token tkn : this->_tkn_v){
-		std::cout << tkn.cmd << " | " << tkn.type << " | " << tkn.value << std::endl;
+	
+	if (!this->_tkn_v.empty()){
+		for(Token tkn : this->_tkn_v){
+			std::cout << tkn.cmd << " | " << tkn.type << " | " << tkn.value << std::endl;
+		}
 	}
 }
 
@@ -139,7 +141,7 @@ void	Vm::mod(){
 	this->_stack.push_back(tmp);
 }
 
-void	Vm::assert(eOperandType type, std::string const &value){
+void	Vm::assertVM(eOperandType type, std::string const &value){
 	OperandFactory	facto;
 
 	if (this->_stack.back() == facto.createOperand(type, value))
@@ -169,5 +171,5 @@ std::map<std::string, opFunc> Vm::opFncMap = {
 };
 typedef void (Vm::*opFuncArg) (eOperandType type, std::string const &value);
 std::map<std::string, opFuncArg> Vm::opFncMapArg = {
-	{"push", &Vm::push}, {"assert", &Vm::assert}
+	{"push", &Vm::push}, {"assert", &Vm::assertVM}
 };

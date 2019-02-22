@@ -34,7 +34,7 @@ class Vm {
 		void	mul();
 		void	div();
 		void	mod();
-		void	assert(eOperandType type, std::string const &value);
+		void	assertVM(eOperandType type, std::string const &value);
 		void	dump();
 		void	print();
 		void	exit();

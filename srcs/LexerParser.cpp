@@ -19,7 +19,7 @@
 // # define RGX_INT_ARG "^(push|assert)?(\\s+int8|\\s+int16|\\s+int32)?(\\(([-+]?[0-9]*)\\))?(\\s*(\\;.*)?$)?(.*)?"
 // # define RGX_FLT_ARG "^(push|assert)?(\\s+float|\\s+double)?(\\(([-+]?[0-9]*\\.?[0-9]*)\\))?(\\s*(\\;.*)?$)?(.*)?"
 
-LexerParser::LexerParser() : _is_cin(false), _is_error(false) {
+LexerParser::LexerParser() : _is_cin(false), _is_error(false), _is_end(false) {
 }
 
 LexerParser::~LexerParser() {
@@ -115,11 +115,14 @@ void			LexerParser::pars_tkn(std::cmatch lexer_tkn, std::string line, int i_line
 	};
 
 	this->handle_error(lexer_tkn, line, i_line);
-	if (this->_is_error)
+	if (this->_is_error || this->_is_end)
 		return;
 
-	if (!std::strcmp(lexer_tkn[1].str().c_str(), "push ") || !std::strcmp(lexer_tkn[1].str().c_str(), "assert "))
-	{
+	if (!std::strcmp(lexer_tkn[1].str().c_str(), "exit")){
+		this->_is_end = true;
+		return;
+	}
+	else if (!std::strcmp(lexer_tkn[1].str().c_str(), "push ") || !std::strcmp(lexer_tkn[1].str().c_str(), "assert ")){
 		tkn.cmd = lexer_tkn[1].str();
 		tkn.type = type_map[lexer_tkn[2].str()];
 		tkn.value = lexer_tkn[4].str();

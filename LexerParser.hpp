@@ -45,6 +45,7 @@ class LexerParser {
 
 		bool						_is_cin;
 		bool						_is_error;
+		bool						_is_end;
 		std::list<Token>			_tkn_lst;
 		std::stringstream			_errors;
 };
