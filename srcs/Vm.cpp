@@ -6,7 +6,7 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 10:11:01 by sflinois          #+#    #+#             */
-/*   Updated: 2019/02/18 13:29:01 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/05/29 14:52:13 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,20 @@ void	Vm::start_vm(std::list<Token> tkn_lst){
 	this->_tkn_v = tkn_lst;
 	while(!this->_tkn_v.empty() && this->_tkn_v.front().cmd != "exit"){
 		if (Vm::opFncMap.find(this->_tkn_v.front().cmd) != Vm::opFncMap.end())
+		{
 			(this->*(Vm::opFncMap[this->_tkn_v.front().cmd]))();
+		}
 		else if	(Vm::opFncMapArg.find(this->_tkn_v.front().cmd) != Vm::opFncMapArg.end())
+		{
 			(this->*(Vm::opFncMapArg[this->_tkn_v.front().cmd]))(this->_tkn_v.front().type, this->_tkn_v.front().value);
+		}
 		this->_tkn_v.pop_front();
 	}
-	
-	
-	if (!this->_tkn_v.empty()){
-		for(Token tkn : this->_tkn_v){
-			std::cout << tkn.cmd << " | " << tkn.type << " | " << tkn.value << std::endl;
-		}
+	if ((!this->_tkn_v.empty() && this->_tkn_v.front().cmd != "exit") || this->_tkn_v.empty()){
+		throw std::runtime_error("Error : did not encounter any <exit> instruction");
+	}
+	while(!this->_tkn_v.empty()){
+		this->_tkn_v.pop_front();
 	}
 }
 
@@ -53,6 +56,8 @@ void	Vm::push(eOperandType type, std::string const &value){
 }
 
 void	Vm::pop(){
+	if (this->_stack.size() == 0)
+		throw std::out_of_range("Error : Pop on empty stack");
 	this->_stack.pop_back();
 }
 
@@ -63,7 +68,7 @@ void	Vm::add(){
 
 
 	if (this->_stack.size() < 2)
-		std::cout << "ERROR ADD" << std::endl;	
+		throw std::runtime_error("Error : stack size too small to perform operation");
 	val1 = this->_stack.back();
 	this->_stack.pop_back();
 	val2 = this->_stack.back();
@@ -80,7 +85,7 @@ void	Vm::sub(){
 
 
 	if (this->_stack.size() < 2)
-		std::cout << "ERROR ADD" << std::endl;	
+		throw std::runtime_error("Error : stack size too small to perform operation");
 	val1 = this->_stack.back();
 	this->_stack.pop_back();
 	val2 = this->_stack.back();
@@ -97,7 +102,7 @@ void	Vm::mul(){
 
 
 	if (this->_stack.size() < 2)
-		std::cout << "ERROR ADD" << std::endl;	
+		throw std::runtime_error("Error : stack size too small to perform operation");
 	val1 = this->_stack.back();
 	this->_stack.pop_back();
 	val2 = this->_stack.back();
@@ -114,7 +119,7 @@ void	Vm::div(){
 
 
 	if (this->_stack.size() < 2)
-		std::cout << "ERROR ADD" << std::endl;	
+		throw std::runtime_error("Error : stack size too small to perform operation");
 	val1 = this->_stack.back();
 	this->_stack.pop_back();
 	val2 = this->_stack.back();
@@ -131,7 +136,7 @@ void	Vm::mod(){
 
 
 	if (this->_stack.size() < 2)
-		std::cout << "ERROR ADD" << std::endl;	
+		throw std::runtime_error("Error : stack size too small to perform operation");
 	val1 = this->_stack.back();
 	this->_stack.pop_back();
 	val2 = this->_stack.back();
@@ -144,14 +149,22 @@ void	Vm::mod(){
 void	Vm::assertVM(eOperandType type, std::string const &value){
 	OperandFactory	facto;
 
-	if (this->_stack.back() == facto.createOperand(type, value))
-		std::cout << "ASSERT OK" << std::endl;
+	const IOperand		*tmp = facto.createOperand(type, value);
+	if (this->_stack.back()->getType() == tmp->getType()
+		&& !std::strcmp(this->_stack.back()->toString().c_str(), tmp->toString().c_str()))
+		return;
 	else
-		std::cout << "ASSERT PAS OK" << std::endl;
+		throw std::runtime_error("Error : assert failed");
 	
 }
 
 void	Vm::dump(){
+	this->_stack.reverse();
+	std::for_each(this->_stack.begin(), this->_stack.end(), print_op);
+	this->_stack.reverse();
+}
+
+void	Vm::print_stack(){
 	std::for_each(this->_stack.begin(), this->_stack.end(), print_op);
 }
 
@@ -171,5 +184,5 @@ std::map<std::string, opFunc> Vm::opFncMap = {
 };
 typedef void (Vm::*opFuncArg) (eOperandType type, std::string const &value);
 std::map<std::string, opFuncArg> Vm::opFncMapArg = {
-	{"push", &Vm::push}, {"assert", &Vm::assertVM}
+	{"push ", &Vm::push}, {"assert ", &Vm::assertVM}
 };

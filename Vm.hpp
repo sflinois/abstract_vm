@@ -6,7 +6,7 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 10:05:22 by sflinois          #+#    #+#             */
-/*   Updated: 2019/02/18 13:28:42 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/05/29 14:23:56 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ class Vm {
 		void	mod();
 		void	assertVM(eOperandType type, std::string const &value);
 		void	dump();
+		void	print_stack();
 		void	print();
 		void	exit();
 

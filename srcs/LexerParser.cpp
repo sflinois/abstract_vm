@@ -6,7 +6,7 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 10:14:27 by sflinois          #+#    #+#             */
-/*   Updated: 2019/02/18 11:42:49 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/05/29 13:48:58 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,15 +114,23 @@ void			LexerParser::pars_tkn(std::cmatch lexer_tkn, std::string line, int i_line
 		{"double", Double}
 	};
 
+	if (lexer_tkn[1].str().empty())
+	{
+		for (char const &c: line) {
+			if (c != ' ' && c != '\t' )
+			{
+				if (c == ';')
+					return;
+				else
+					break;
+			}
+		}
+	}
 	this->handle_error(lexer_tkn, line, i_line);
 	if (this->_is_error || this->_is_end)
 		return;
 
-	if (!std::strcmp(lexer_tkn[1].str().c_str(), "exit")){
-		this->_is_end = true;
-		return;
-	}
-	else if (!std::strcmp(lexer_tkn[1].str().c_str(), "push ") || !std::strcmp(lexer_tkn[1].str().c_str(), "assert ")){
+	if (!std::strcmp(lexer_tkn[1].str().c_str(), "push ") || !std::strcmp(lexer_tkn[1].str().c_str(), "assert ")){
 		tkn.cmd = lexer_tkn[1].str();
 		tkn.type = type_map[lexer_tkn[2].str()];
 		tkn.value = lexer_tkn[4].str();
@@ -132,7 +140,9 @@ void			LexerParser::pars_tkn(std::cmatch lexer_tkn, std::string line, int i_line
 		tkn.value = "0";
 	}
 	if (std::strcmp(lexer_tkn[1].str().c_str(), ";;") && std::strcmp(lexer_tkn[1].str().c_str(), ""))
-		this->_tkn_lst.push_front(tkn);
+	{
+		this->_tkn_lst.push_back(tkn);
+	}
 	// std::cout << "the matches were: " << line << std::endl;
 	// for (unsigned i=0; i<lexer_tkn.size(); ++i) {
 	// 	std::cout << "[" << lexer_tkn[i] << "] ";
