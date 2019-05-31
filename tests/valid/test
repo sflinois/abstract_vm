@@ -1,0 +1,12 @@
+push int8(1);12
+push int8(2)
+push int8(3)
+push int8(4)
+print
+pop
+pop ;sdfg sdfg
+pop
+push int8(5)
+; sdfg
+exit
+pop
