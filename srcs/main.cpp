@@ -6,7 +6,7 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/06 10:32:52 by sflinois          #+#    #+#             */
-/*   Updated: 2019/05/29 14:53:34 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/05/31 14:49:46 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,9 @@ int		main(int argc, char **argv){
 		lp.setIsCin();
 		lp.pars_entry(std::cin);
 	}
-	for(Token tkn : lp.getTknLst()){
-		//std::cout << tkn.cmd << " | " << tkn.type << " | " << tkn.value << std::endl;
-	}
-
+	// for(Token tkn : lp.getTknLst()){
+	// 	std::cout << tkn.cmd << " | " << tkn.type << " | " << tkn.value << std::endl;
+	// }
 	if (!lp.getIsErrors())
 	{
 		try

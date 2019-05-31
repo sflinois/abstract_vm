@@ -6,7 +6,7 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 14:31:21 by sflinois          #+#    #+#             */
-/*   Updated: 2019/05/29 14:59:50 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/05/31 14:04:23 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ class LexerParser {
 		LexerParser(LexerParser const &src); 
 		LexerParser	&operator=(LexerParser const &rhs);
 
-		std::cmatch		tokenise(std::string line);
+		void			tokenise(std::string *line, std::cmatch *cm);
 		void			handle_error(std::cmatch lexer_tkn, std::string line, int i_line);
 		void			pars_tkn(std::cmatch lexer_tkn, std::string line, int i_line);
 

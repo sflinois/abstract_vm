@@ -6,7 +6,7 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 10:11:01 by sflinois          #+#    #+#             */
-/*   Updated: 2019/05/29 14:52:13 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/05/31 14:43:48 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	Vm::add(){
 	val2 = this->_stack.back();
 	this->_stack.pop_back();
 
-	tmp = *val1 + *val2;
+	tmp = *val2 + *val1;
 	this->_stack.push_back(tmp);
 }
 
@@ -91,7 +91,7 @@ void	Vm::sub(){
 	val2 = this->_stack.back();
 	this->_stack.pop_back();
 
-	tmp = *val1 - *val2;
+	tmp = *val2 - *val1;
 	this->_stack.push_back(tmp);
 }
 
@@ -108,7 +108,7 @@ void	Vm::mul(){
 	val2 = this->_stack.back();
 	this->_stack.pop_back();
 
-	tmp = *val1 * *val2;
+	tmp = *val2 * *val1;
 	this->_stack.push_back(tmp);
 }
 
@@ -125,7 +125,7 @@ void	Vm::div(){
 	val2 = this->_stack.back();
 	this->_stack.pop_back();
 
-	tmp = *val1 / *val2;
+	tmp = *val2 / *val1;
 	this->_stack.push_back(tmp);
 }
 
@@ -142,7 +142,7 @@ void	Vm::mod(){
 	val2 = this->_stack.back();
 	this->_stack.pop_back();
 
-	tmp = *val1 % *val2;
+	tmp = *val2 % *val1;
 	this->_stack.push_back(tmp);
 }
 
@@ -169,7 +169,10 @@ void	Vm::print_stack(){
 }
 
 void	Vm::print(){
-	print_op(this->_stack.back());
+	if (this->_stack.back()->getType() != eOperandType::Int8)
+		throw std::runtime_error("Error : assert failed, you can only print int8 values");
+	std::cout << std::stoi(this->_stack.back()->toString()) << std::endl;
+	//print_op(this->_stack.back());
 }
 
 void	Vm::exit(){

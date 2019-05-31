@@ -6,7 +6,7 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 10:14:27 by sflinois          #+#    #+#             */
-/*   Updated: 2019/05/29 13:48:58 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/05/31 14:09:33 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	LexerParser::pars_entry(std::istream& in){
 	while(std::getline(in, line)){
 		if (this->_is_cin && std::regex_match(line.c_str(), lexer_cm, eend))
 			break ;
-		lexer_cm = this->tokenise(line);
+		this->tokenise(&line, &lexer_cm);
 		this->pars_tkn(lexer_cm, line, i_line);
 		i_line++;
 	}
@@ -53,26 +53,25 @@ void	LexerParser::pars_entry(std::istream& in){
 		std::cerr << this->_errors.str();
 }
 
-std::cmatch		LexerParser::tokenise(std::string line){
+void	LexerParser::tokenise(std::string *line, std::cmatch *cm){
 
-	std::cmatch cm;
 	std::regex	eno(RGX_NO_ARG);
 	std::regex	eint(RGX_INT_ARG);
 	std::regex	eflt(RGX_FLT_ARG);
 	std::regex	eempty(RGX_EMPTY);
 
-	// std::regex_match(line.c_str(), cm, eint);
-	// return cm;
-
-	if (std::regex_match(line.c_str(), cm, eint) && cm[1].length() > 0 && cm[2].length() > 0){
+	if (std::regex_match((*line).c_str(), *cm, eint) && (*cm)[1].length() > 0 && (*cm)[2].length() > 0){
+		return;
 	}
-	else if (std::regex_match(line.c_str(), cm, eflt) && cm[1].length() > 0){
+	else if (std::regex_match((*line).c_str(), *cm, eflt) && (*cm)[1].length() > 0){
+		return;
 	}
-	else if (std::regex_match(line.c_str(), cm, eno) && cm[1].length() > 0){
+	else if (std::regex_match((*line).c_str(), *cm, eno) && (*cm)[1].length() > 0){
+		return;
 	}
-	else if (std::regex_match(line.c_str(), cm, eempty)){
+	else if (std::regex_match((*line).c_str(), *cm, eempty)){
+		return;
 	}
-	return (cm);
 }
 
 void			LexerParser::handle_error(std::cmatch lexer_tkn, std::string line, int i_line){
@@ -114,11 +113,9 @@ void			LexerParser::pars_tkn(std::cmatch lexer_tkn, std::string line, int i_line
 		{"double", Double}
 	};
 
-	if (lexer_tkn[1].str().empty())
-	{
+	if (lexer_tkn[1].str().empty()) {
 		for (char const &c: line) {
-			if (c != ' ' && c != '\t' )
-			{
+			if (c != ' ' && c != '\t') {
 				if (c == ';')
 					return;
 				else
@@ -145,7 +142,7 @@ void			LexerParser::pars_tkn(std::cmatch lexer_tkn, std::string line, int i_line
 	}
 	// std::cout << "the matches were: " << line << std::endl;
 	// for (unsigned i=0; i<lexer_tkn.size(); ++i) {
-	// 	std::cout << "[" << lexer_tkn[i] << "] ";
+		// std::cout << "[" << lexer_tkn[i] << "] ";
 	// }
 	// std::cout << std::endl;
 }
