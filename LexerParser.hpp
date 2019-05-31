@@ -6,7 +6,7 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 14:31:21 by sflinois          #+#    #+#             */
-/*   Updated: 2019/05/31 14:04:23 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/05/31 17:53:54 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include "Token.hpp"
 
 # define RGX_NO_ARG "^(\\;\\;|pop|dump|add|sub|mul|div|mod|print|exit)\\s*(\\;.*$)?(.*)?"
-//# define RGX_INT_ARG "^(push|assert)\\s+(int8|int16|int32)\\(([-+]?[0-9]*)\\)\\s*(\\;.*)?$"
 # define RGX_INT_ARG "^(push |assert )?(int8|int16|int32)?(\\(([-]?[0-9]+)\\))?(\\s*(\\;.*)?$)?(.*)?"
 # define RGX_FLT_ARG "^(push |assert )?(float|double)?(\\(([-]?[0-9]+\\.[0-9]+)\\))?(\\s*(\\;.*)?$)?(.*)?"
 # define RGX_EMPTY "()(\\s*)(.*)"

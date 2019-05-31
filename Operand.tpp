@@ -6,7 +6,7 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/07 17:01:05 by sflinois          #+#    #+#             */
-/*   Updated: 2019/02/14 15:27:33 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/05/31 17:55:26 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "OperandFactory.hpp"
 #include <iostream>
 #include <cmath>
+#include <sstream>
 
 template <typename T>
 class Operand : public IOperand
@@ -48,9 +49,9 @@ class Operand : public IOperand
 		rhs_v = std::atof(rhs.toString().c_str());
 
 		if ((rhs_v > 0) && (this->_value > DBL_MAX - rhs_v)) /* `a + this->_value` would overflow */
-			throw std::out_of_range("EXCEPTION: double out of range (overflow)");
+			throw std::out_of_range("runtime_error: : double out of range (overflow)");
 		else if ((rhs_v < 0) && (this->_value < DBL_MIN - rhs_v)) /* `a + this->_value` would underflow */
-			throw std::out_of_range("EXCEPTION: double out of range (underflow)");
+			throw std::out_of_range("runtime_error: : double out of range (underflow)");
 
 		return (facto.createOperand(opType, std::to_string(this->_value + rhs_v)));
 	}
@@ -64,9 +65,9 @@ class Operand : public IOperand
 		rhs_v = std::atof(rhs.toString().c_str());
 
 		if ((rhs_v < 0) && (this->_value > DBL_MAX + rhs_v)) /* `a - this->_value` would overflow */
-			throw std::out_of_range("EXCEPTION: double out of range (overflow)");
+			throw std::out_of_range("runtime_error: : double out of range (overflow)");
 		else if ((rhs_v > 0) && (this->_value < DBL_MIN + rhs_v)) /* `a - this->_value` would underflow */
-			throw std::out_of_range("EXCEPTION: double out of range (underflow)");
+			throw std::out_of_range("runtime_error: : double out of range (underflow)");
 		return (facto.createOperand(opType, std::to_string(this->_value - rhs_v)));
 	}
 	IOperand const *operator*(IOperand const &rhs) const
@@ -79,9 +80,9 @@ class Operand : public IOperand
 		rhs_v = std::atof(rhs.toString().c_str());
 
 		if (rhs_v > 0 && this->_value > DBL_MAX / rhs_v) /* `rhs_v * this->_value` would overflow */
-			throw std::out_of_range("EXCEPTION: double out of range (overflow)");
+			throw std::out_of_range("runtime_error: : double out of range (overflow)");
 		if (rhs_v > 0 && this->_value < DBL_MIN / rhs_v) /* `rhs_v * this->_value` would underflow */
-			throw std::out_of_range("EXCEPTION: double out of range (underflow)");
+			throw std::out_of_range("runtime_error: : double out of range (underflow)");
 		// there may be need to check for -1 for two's complement machines
 		// if ((rhs_v == -1) && (this->_value == DBL_MIN)) /* `rhs_v * this->_value` can overflow */
 		// 	throw std::out_of_range("EXCEPTION: double out of range (overflow)");
@@ -100,11 +101,11 @@ class Operand : public IOperand
 		rhs_v = std::atof(rhs.toString().c_str());
 
 		if (rhs_v == 0)
-			throw std::overflow_error("Division by 0");
+			throw std::overflow_error("runtime_error: division by 0");
 		if (rhs_v > 0 && rhs_v < 1 && this->_value > DBL_MAX * rhs_v) /* `rhs_v * this->_value` would overflow */
-			throw std::out_of_range("EXCEPTION: double out of range (overflow)");
+			throw std::out_of_range("runtime_error: : double out of range (overflow)");
 		if (rhs_v > 0 && rhs_v < 1 && this->_value < DBL_MIN * rhs_v) /* `rhs_v * this->_value` would underflow */
-			throw std::out_of_range("EXCEPTION: double out of range (underflow)");
+			throw std::out_of_range("runtime_error: : double out of range (underflow)");
 
 		return (facto.createOperand(opType, std::to_string( this->_value / rhs_v)));
 	}
@@ -118,7 +119,7 @@ class Operand : public IOperand
 		rhs_v = std::atof(rhs.toString().c_str());
 
 		if (rhs_v == 0)
-			throw std::overflow_error("Division by 0");
+			throw std::overflow_error("runtime_error: division by 0");
 
 		return (facto.createOperand(opType, std::to_string(fmod(this->_value, rhs_v))));
 	}
@@ -133,7 +134,12 @@ class Operand : public IOperand
 	//toString
 	std::string const &toString(void) const
 	{
-		return (*(new std::string(std::to_string(this->_value))));
+		std::ostringstream ss;
+		if (this->_type == eOperandType::Int8)
+			ss << static_cast<int>(this->_value);
+		else
+			ss << this->_value;
+		return (*(new std::string(ss.str())));
 	}
 
   private:

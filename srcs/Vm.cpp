@@ -6,7 +6,7 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 10:11:01 by sflinois          #+#    #+#             */
-/*   Updated: 2019/05/31 14:43:48 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/05/31 18:17:22 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,22 +21,28 @@ Vm::~Vm() {
 
 }
 
-
-void	Vm::start_vm(std::list<Token> tkn_lst){
+void	Vm::start_vm(std::list<Token> tkn_lst, int opt_flag){
 	this->_tkn_v = tkn_lst;
+	this->_opt_flag = opt_flag;
 	while(!this->_tkn_v.empty() && this->_tkn_v.front().cmd != "exit"){
-		if (Vm::opFncMap.find(this->_tkn_v.front().cmd) != Vm::opFncMap.end())
-		{
+		if (Vm::opFncMap.find(this->_tkn_v.front().cmd) != Vm::opFncMap.end()){
+			if (this->_opt_flag & OPT_VERB_OPERATOR)
+				std::cout << "\033[1m" << "<Launching cmd: " << this->_tkn_v.front().cmd << ">" << "\033[0m" << std::endl;
 			(this->*(Vm::opFncMap[this->_tkn_v.front().cmd]))();
 		}
-		else if	(Vm::opFncMapArg.find(this->_tkn_v.front().cmd) != Vm::opFncMapArg.end())
-		{
+		else if	(Vm::opFncMapArg.find(this->_tkn_v.front().cmd) != Vm::opFncMapArg.end()){
+			if (this->_opt_flag & OPT_VERB_OPERATOR) {
+				std::cout << "\033[1m" << "<Launching cmd: " << this->_tkn_v.front().cmd << " type: " << this->_tkn_v.front().type
+					<< " value: " << this->_tkn_v.front().value << ">" << "\033[0m" << std::endl;
+			}
 			(this->*(Vm::opFncMapArg[this->_tkn_v.front().cmd]))(this->_tkn_v.front().type, this->_tkn_v.front().value);
 		}
+		if (this->_opt_flag & OPT_VERB_STACK)
+			this->print_stack();
 		this->_tkn_v.pop_front();
 	}
 	if ((!this->_tkn_v.empty() && this->_tkn_v.front().cmd != "exit") || this->_tkn_v.empty()){
-		throw std::runtime_error("Error : did not encounter any <exit> instruction");
+		throw Vm::NoExitException("runtime_error: Exit instruction not found");
 	}
 	while(!this->_tkn_v.empty()){
 		this->_tkn_v.pop_front();
@@ -45,8 +51,32 @@ void	Vm::start_vm(std::list<Token> tkn_lst){
 
 //stack functions
 
+std::string get_color(eOperandType type)
+{
+	std::string colors[5]= {
+		"\033[35m",
+		"\033[34m",
+		"\033[36m",
+		"\033[32m",
+		"\033[33m"
+	};
+	return (colors[type]);
+}
+
 void	print_op(IOperand const * op){
 	std::cout << op->toString() << std::endl;
+}
+
+void	print_op_color(IOperand const * op){
+	std::cout << get_color(op->getType());
+	std::cout << op->toString();
+	std::cout << "\033[0m" << std::endl;
+}
+
+void	print_stack_color(IOperand const * op){
+	std::cout << "\033[1m" << get_color(op->getType());
+	std::cout << op->toString();
+	std::cout << "\033[0m" << std::endl;
 }
 
 void	Vm::push(eOperandType type, std::string const &value){
@@ -57,7 +87,7 @@ void	Vm::push(eOperandType type, std::string const &value){
 
 void	Vm::pop(){
 	if (this->_stack.size() == 0)
-		throw std::out_of_range("Error : Pop on empty stack");
+		throw Vm::EmptyStackException("runtime_error: pop operator used on empty stack");
 	this->_stack.pop_back();
 }
 
@@ -68,7 +98,7 @@ void	Vm::add(){
 
 
 	if (this->_stack.size() < 2)
-		throw std::runtime_error("Error : stack size too small to perform operation");
+		throw Vm::StackTooSmallException("runtime_error: not enough elements on stack to use the add operator");
 	val1 = this->_stack.back();
 	this->_stack.pop_back();
 	val2 = this->_stack.back();
@@ -85,7 +115,7 @@ void	Vm::sub(){
 
 
 	if (this->_stack.size() < 2)
-		throw std::runtime_error("Error : stack size too small to perform operation");
+		throw Vm::StackTooSmallException("runtime_error: not enough elements on stack to use the sub operator");
 	val1 = this->_stack.back();
 	this->_stack.pop_back();
 	val2 = this->_stack.back();
@@ -102,7 +132,7 @@ void	Vm::mul(){
 
 
 	if (this->_stack.size() < 2)
-		throw std::runtime_error("Error : stack size too small to perform operation");
+		throw Vm::StackTooSmallException("runtime_error: not enough elements on stack to use the mul operator");
 	val1 = this->_stack.back();
 	this->_stack.pop_back();
 	val2 = this->_stack.back();
@@ -119,12 +149,16 @@ void	Vm::div(){
 
 
 	if (this->_stack.size() < 2)
-		throw std::runtime_error("Error : stack size too small to perform operation");
+		throw Vm::StackTooSmallException("runtime_error: not enough elements on stack to use the div operator");
 	val1 = this->_stack.back();
 	this->_stack.pop_back();
 	val2 = this->_stack.back();
 	this->_stack.pop_back();
-
+	// if (*val1->getType >= eOperandType::Int8 && *val1->getType <= eOperandType::Int32)
+	// {
+	// 	if (*val1 == Operand(0))
+	// 		throw std::overflow_error("runtime_error: division by 0");
+	// }
 	tmp = *val2 / *val1;
 	this->_stack.push_back(tmp);
 }
@@ -136,7 +170,7 @@ void	Vm::mod(){
 
 
 	if (this->_stack.size() < 2)
-		throw std::runtime_error("Error : stack size too small to perform operation");
+		throw Vm::StackTooSmallException("runtime_error: not enough elements on stack to use the mod operator");
 	val1 = this->_stack.back();
 	this->_stack.pop_back();
 	val2 = this->_stack.back();
@@ -154,29 +188,38 @@ void	Vm::assertVM(eOperandType type, std::string const &value){
 		&& !std::strcmp(this->_stack.back()->toString().c_str(), tmp->toString().c_str()))
 		return;
 	else
-		throw std::runtime_error("Error : assert failed");
+		throw Vm::AssertFailedException("runtime_error : assert failed");
 	
 }
 
 void	Vm::dump(){
 	this->_stack.reverse();
-	std::for_each(this->_stack.begin(), this->_stack.end(), print_op);
+	if (this->_opt_flag & OPT_COLOR)
+		std::for_each(this->_stack.begin(), this->_stack.end(), print_op_color);
+	else
+		std::for_each(this->_stack.begin(), this->_stack.end(), print_op);
 	this->_stack.reverse();
 }
 
 void	Vm::print_stack(){
-	std::for_each(this->_stack.begin(), this->_stack.end(), print_op);
+	std::cout << "\033[1m" << "< Stack state (from top to bottom):" << std::endl;
+	if (this->_opt_flag & OPT_COLOR)
+		std::for_each(this->_stack.begin(), this->_stack.end(), print_stack_color);
+	else
+	{
+		std::for_each(this->_stack.begin(), this->_stack.end(), print_op);
+	}
+	std::cout << ">" << "\033[0m" << std::endl;
 }
 
 void	Vm::print(){
 	if (this->_stack.back()->getType() != eOperandType::Int8)
-		throw std::runtime_error("Error : assert failed, you can only print int8 values");
-	std::cout << std::stoi(this->_stack.back()->toString()) << std::endl;
-	//print_op(this->_stack.back());
+		throw Vm::AssertFailedException("runtime_error : assert failed, you can only print int8 values");
+	std::cout << this->_stack.back()->toString();
 }
 
 void	Vm::exit(){
-
+	return;
 }
 
 typedef void (Vm::*opFunc) (void);
@@ -189,3 +232,35 @@ typedef void (Vm::*opFuncArg) (eOperandType type, std::string const &value);
 std::map<std::string, opFuncArg> Vm::opFncMapArg = {
 	{"push ", &Vm::push}, {"assert ", &Vm::assertVM}
 };
+
+Vm::NoExitException::NoExitException(const char *str) : std::runtime_error("NoExitException"){
+	this->_msg = str;
+}
+Vm::NoExitException::~NoExitException() throw(){}
+const char*	Vm::NoExitException::what() const throw(){
+	return(this->_msg);
+}
+
+Vm::EmptyStackException::EmptyStackException(const char *str) : std::runtime_error("EmptyStackException"){
+	this->_msg = str;
+}
+Vm::EmptyStackException::~EmptyStackException() throw(){}
+const char*	Vm::EmptyStackException::what() const throw(){
+	return(this->_msg);
+}
+
+Vm::StackTooSmallException::StackTooSmallException(const char *str) : std::runtime_error("StackTooSmallException"){
+	this->_msg = str;
+}
+Vm::StackTooSmallException::~StackTooSmallException() throw(){}
+const char*	Vm::StackTooSmallException::what() const throw(){
+	return(this->_msg);
+}
+
+Vm::AssertFailedException::AssertFailedException(const char *str) : std::runtime_error("AssertFailedException"){
+	this->_msg = str;
+}
+Vm::AssertFailedException::~AssertFailedException() throw(){}
+const char*	Vm::AssertFailedException::what() const throw(){
+	return(this->_msg);
+}

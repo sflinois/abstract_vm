@@ -6,7 +6,7 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 10:14:27 by sflinois          #+#    #+#             */
-/*   Updated: 2019/05/31 14:09:33 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/05/31 17:01:04 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,6 @@
 #include <regex>
 #include <map>
 #include <iostream>
-
-// # define RGX_INT_ARG "^(push|assert)?(\\s+int8|\\s+int16|\\s+int32)?(\\(([-+]?[0-9]*)\\))?(\\s*(\\;.*)?$)?(.*)?"
-// # define RGX_FLT_ARG "^(push|assert)?(\\s+float|\\s+double)?(\\(([-+]?[0-9]*\\.?[0-9]*)\\))?(\\s*(\\;.*)?$)?(.*)?"
 
 LexerParser::LexerParser() : _is_cin(false), _is_error(false), _is_end(false) {
 }
@@ -140,9 +137,14 @@ void			LexerParser::pars_tkn(std::cmatch lexer_tkn, std::string line, int i_line
 	{
 		this->_tkn_lst.push_back(tkn);
 	}
-	// std::cout << "the matches were: " << line << std::endl;
-	// for (unsigned i=0; i<lexer_tkn.size(); ++i) {
-		// std::cout << "[" << lexer_tkn[i] << "] ";
-	// }
-	// std::cout << std::endl;
 }
+
+/*
+**
+** std::cout << "the matches were: " << line << std::endl;
+** for (unsigned i=0; i<lexer_tkn.size(); ++i) {
+** 	std::cout << "[" << lexer_tkn[i] << "] ";
+** }
+** std::cout << std::endl;
+**
+*/
