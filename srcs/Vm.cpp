@@ -6,7 +6,7 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 10:11:01 by sflinois          #+#    #+#             */
-/*   Updated: 2019/06/01 16:38:23 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/06/01 16:47:57 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void	Vm::add(){
 	}catch(const std::exception& e){
 		delete val1;
 		delete val2;
-		throw e;
+		throw Vm::CmdErrorException(e.what());
 	}
 	delete val1;
 	delete val2;
@@ -139,7 +139,7 @@ void	Vm::sub(){
 	}catch(const std::exception& e){
 		delete val1;
 		delete val2;
-		throw e;
+		throw Vm::CmdErrorException(e.what());
 	}
 	delete val1;
 	delete val2;
@@ -165,7 +165,7 @@ void	Vm::mul(){
 	}catch(const std::exception& e){
 		delete val1;
 		delete val2;
-		throw e;
+		throw Vm::CmdErrorException(e.what());
 	}
 	delete val1;
 	delete val2;
@@ -191,7 +191,7 @@ void	Vm::div(){
 	}catch(const std::exception& e){
 		delete val1;
 		delete val2;
-		throw e;
+		throw Vm::CmdErrorException(e.what());
 	}
 	delete val1;
 	delete val2;
@@ -217,7 +217,7 @@ void	Vm::mod(){
 	}catch(const std::exception& e){
 		delete val1;
 		delete val2;
-		throw e;
+		throw Vm::CmdErrorException(e.what());
 	}
 	delete val1;
 	delete val2;
@@ -306,7 +306,7 @@ void	Vm::min(){
 	}catch(const std::exception& e){
 		delete val1;
 		delete val2;
-		throw e;
+		throw Vm::CmdErrorException(e.what());
 	}
 	delete val1;
 	delete val2;
@@ -332,7 +332,7 @@ void	Vm::max(){
 	}catch(const std::exception& e){
 		delete val1;
 		delete val2;
-		throw e;
+		throw Vm::CmdErrorException(e.what());
 	}
 	delete val1;
 	delete val2;
@@ -358,7 +358,7 @@ void	Vm::avg(){
 	}catch(const std::exception& e){
 		delete val1;
 		delete val2;
-		throw e;
+		throw Vm::CmdErrorException(e.what());
 	}
 	delete val1;
 	delete val2;
@@ -384,7 +384,7 @@ void	Vm::pow(){
 	}catch(const std::exception& e){
 		delete val1;
 		delete val2;
-		throw e;
+		throw Vm::CmdErrorException(e.what());
 	}
 	delete val1;
 	delete val2;
@@ -410,7 +410,7 @@ void	Vm::iand(){
 	}catch(const std::exception& e){
 		delete val1;
 		delete val2;
-		throw e;
+		throw Vm::CmdErrorException(e.what());
 	}
 	delete val1;
 	delete val2;
@@ -436,7 +436,7 @@ void	Vm::ior(){
 	}catch(const std::exception& e){
 		delete val1;
 		delete val2;
-		throw e;
+		throw Vm::CmdErrorException(e.what());
 	}
 	delete val1;
 	delete val2;
@@ -462,7 +462,7 @@ void	Vm::ixor(){
 	}catch(const std::exception& e){
 		delete val1;
 		delete val2;
-		throw e;
+		throw Vm::CmdErrorException(e.what());
 	}
 	delete val1;
 	delete val2;
@@ -514,3 +514,12 @@ Vm::AssertFailedException::~AssertFailedException() throw(){}
 const char*	Vm::AssertFailedException::what() const throw(){
 	return(this->_msg);
 }
+
+Vm::CmdErrorException::CmdErrorException(const char *str) : std::runtime_error("CmdErrorException"){
+	this->_msg = str;
+}
+Vm::CmdErrorException::~CmdErrorException() throw(){}
+const char*	Vm::CmdErrorException::what() const throw(){
+	return(this->_msg);
+}
+

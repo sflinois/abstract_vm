@@ -6,7 +6,7 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 10:05:22 by sflinois          #+#    #+#             */
-/*   Updated: 2019/06/01 14:25:23 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/06/01 16:46:24 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,15 @@ class Vm {
 			public:
 				AssertFailedException(const char *str);
 				~AssertFailedException() throw();
+
+				const char* what() const throw();
+			private:
+				const char*	_msg;
+		};
+		class CmdErrorException : public std::runtime_error{
+			public:
+				CmdErrorException(const char *str);
+				~CmdErrorException() throw();
 
 				const char* what() const throw();
 			private:
