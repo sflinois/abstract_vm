@@ -6,7 +6,7 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 10:11:01 by sflinois          #+#    #+#             */
-/*   Updated: 2019/06/01 14:27:59 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/06/01 14:36:56 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,9 +194,15 @@ void	Vm::assertVM(eOperandType type, std::string const &value){
 	const IOperand		*tmp = facto.createOperand(type, value);
 	if (this->_stack.back()->getType() == tmp->getType()
 		&& !std::strcmp(this->_stack.back()->toString().c_str(), tmp->toString().c_str()))
+	{
+		delete tmp;
 		return;
+	}
 	else
+	{
+		delete tmp;
 		throw Vm::AssertFailedException("runtime_error : assert failed");
+	}
 	
 }
 
