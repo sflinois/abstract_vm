@@ -6,7 +6,7 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/08 15:22:06 by sflinois          #+#    #+#             */
-/*   Updated: 2019/06/01 15:04:44 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/06/01 15:12:28 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ template<> Operand<int8_t>::Operand(int8_t value) :
 	_precision(Int8), _type(Int8), _value(value)
 {
 	std::ostringstream ss;
-	ss << value;
+	ss << static_cast<int>(value);
 	this->_str = std::string(ss.str());
 }
 

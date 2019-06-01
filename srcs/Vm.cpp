@@ -6,12 +6,13 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 10:11:01 by sflinois          #+#    #+#             */
-/*   Updated: 2019/06/01 15:04:49 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/06/01 15:13:14 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Vm.hpp"
 #include <iostream>
+#include <sstream>
 
 Vm::Vm() {
 
@@ -255,9 +256,12 @@ void	Vm::print_stack(){
 }
 
 void	Vm::print(){
+	std::ostringstream ss;
+
 	if (this->_stack.back()->getType() != eOperandType::Int8)
 		throw Vm::AssertFailedException("runtime_error : assert failed, you can only print int8 values");
-	std::cout << this->_stack.back()->toString();
+	ss << static_cast<char>(std::stoi(this->_stack.back()->toString()));
+	std::cout << ss.str();
 }
 
 void	Vm::exit(){
