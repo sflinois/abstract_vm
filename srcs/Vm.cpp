@@ -6,7 +6,7 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 10:11:01 by sflinois          #+#    #+#             */
-/*   Updated: 2019/06/01 13:31:47 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/06/01 13:39:03 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,11 +154,6 @@ void	Vm::div(){
 	this->_stack.pop_back();
 	val2 = this->_stack.back();
 	this->_stack.pop_back();
-	// if (*val1->getType >= eOperandType::Int8 && *val1->getType <= eOperandType::Int32)
-	// {
-	// 	if (*val1 == Operand(0))
-	// 		throw std::overflow_error("runtime_error: division by 0");
-	// }
 	tmp = *val2 / *val1;
 	this->_stack.push_back(tmp);
 }
@@ -206,9 +201,7 @@ void	Vm::print_stack(){
 	if (this->_opt_flag & OPT_COLOR)
 		std::for_each(this->_stack.begin(), this->_stack.end(), print_stack_color);
 	else
-	{
 		std::for_each(this->_stack.begin(), this->_stack.end(), print_op);
-	}
 	std::cout << "\033[1m---" << "\033[0m" << std::endl;
 }
 

@@ -6,7 +6,7 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 10:14:27 by sflinois          #+#    #+#             */
-/*   Updated: 2019/06/01 13:24:46 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/06/01 13:39:47 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,13 +138,3 @@ void			LexerParser::pars_tkn(std::cmatch lexer_tkn, std::string line, int i_line
 		this->_tkn_lst.push_back(tkn);
 	}
 }
-
-/*
-**
-** std::cout << "the matches were: " << line << std::endl;
-** for (unsigned i=0; i<lexer_tkn.size(); ++i) {
-** 	std::cout << "[" << lexer_tkn[i] << "] ";
-** }
-** std::cout << std::endl;
-**
-*/

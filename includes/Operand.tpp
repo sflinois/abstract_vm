@@ -6,7 +6,7 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/07 17:01:05 by sflinois          #+#    #+#             */
-/*   Updated: 2019/06/01 12:19:06 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/06/01 13:40:17 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,6 @@ class Operand : public IOperand
 			throw std::out_of_range("runtime_error: : double out of range (overflow)");
 		if (rhs_v > 0 && this->_value < DBL_MIN / rhs_v) /* `rhs_v * this->_value` would underflow */
 			throw std::out_of_range("runtime_error: : double out of range (underflow)");
-		// there may be need to check for -1 for two's complement machines
-		// if ((rhs_v == -1) && (this->_value == DBL_MIN)) /* `rhs_v * this->_value` can overflow */
-		// 	throw std::out_of_range("EXCEPTION: double out of range (overflow)");
-		// if ((this->_value == -1) && (rhs_v == DBL_MIN)) /* `rhs_v * this->_value` (or `rhs_v / this->_value`) can overflow */
-		// 	throw std::out_of_range("EXCEPTION: double out of range (underflow)");
 
 		return (facto.createOperand(opType, std::to_string(this->_value * rhs_v)));
 	}
@@ -132,7 +127,6 @@ class Operand : public IOperand
 		return false;
 	}
 
-	//toString
 	std::string const &toString(void) const
 	{
 		std::ostringstream ss;
