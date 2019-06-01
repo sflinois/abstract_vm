@@ -1,0 +1,16 @@
+push int16(42)
+pop
+push int16(42)
+push int16(42)
+add
+push int16(42)
+sub
+push int16(42)
+mul
+push int16(42)
+div
+push int16(42)
+mod
+push int16(42)
+dump
+exit
