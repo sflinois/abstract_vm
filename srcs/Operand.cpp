@@ -6,11 +6,11 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/08 15:22:06 by sflinois          #+#    #+#             */
-/*   Updated: 2019/05/29 14:18:32 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/06/01 13:24:46 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../Operand.tpp"
+#include "Operand.tpp"
 #include <iostream>
 
 template<> Operand<int8_t>::Operand(int8_t value) :

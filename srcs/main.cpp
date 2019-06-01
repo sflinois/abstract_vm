@@ -6,13 +6,13 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/06 10:32:52 by sflinois          #+#    #+#             */
-/*   Updated: 2019/05/31 18:34:37 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/06/01 13:34:02 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../Vm.hpp"
-#include "../LexerParser.hpp"
-#include "../Token.hpp"
+#include "Vm.hpp"
+#include "LexerParser.hpp"
+#include "Token.hpp"
 #include <fstream>
 #include <iostream>
 #include <regex>
@@ -67,6 +67,13 @@ static int	print_help()
 	<< "   | mul" << std::endl
 	<< "   | div" << std::endl
 	<< "   | mod" << std::endl
+	<< "   | min" << std::endl
+	<< "   | max" << std::endl
+	<< "   | avg" << std::endl
+	<< "   | pow" << std::endl
+	<< "   | iand" << std::endl
+	<< "   | ior" << std::endl
+	<< "   | ixor" << std::endl
 	<< "   | print" << std::endl
 	<< "   | exit" << std::endl << std::endl
 	<< "VALUE :=" << std::endl

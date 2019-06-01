@@ -6,12 +6,12 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/08 14:03:19 by sflinois          #+#    #+#             */
-/*   Updated: 2019/05/31 16:48:05 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/06/01 13:25:26 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../OperandFactory.hpp"
-#include "../Operand.tpp"
+#include "OperandFactory.hpp"
+#include "Operand.tpp"
 #include <iostream>
 
 OperandFactory::OperandFactory()

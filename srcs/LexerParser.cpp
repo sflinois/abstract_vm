@@ -6,11 +6,11 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 10:14:27 by sflinois          #+#    #+#             */
-/*   Updated: 2019/05/31 17:01:04 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/06/01 13:24:46 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../LexerParser.hpp"
+#include "LexerParser.hpp"
 #include <iostream>
 #include <regex>
 #include <map>

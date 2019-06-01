@@ -6,7 +6,7 @@
 #    By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/07 10:40:24 by sflinois          #+#    #+#              #
-#    Updated: 2019/02/18 11:25:08 by sflinois         ###   ########.fr        #
+#    Updated: 2019/06/01 13:22:36 by sflinois         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ NAME = abstract_vm
 SRC_PATH = ./srcs
 SRC_NAME = main.cpp OperandFactory.cpp Operand.cpp Vm.cpp LexerParser.cpp
 OBJ_PATH = objs
+INC = -I./includes
 
 CC = clang++
 CC_FLAGS = -Wall -Werror -Wextra -std=c++11
@@ -31,7 +32,7 @@ $(NAME): $(OBJ)
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.cpp
 		@mkdir $(OBJ_PATH) 2>/dev/null || true
-		@$(CC) $(CC_FLAGS) -o $@ -c $<
+		@$(CC) $(CC_FLAGS) $(INC) -o $@ -c $<
 
 clean:
 		@rm -fv $(OBJ)

@@ -6,11 +6,11 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 10:11:01 by sflinois          #+#    #+#             */
-/*   Updated: 2019/06/01 12:32:52 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/06/01 13:31:47 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../Vm.hpp"
+#include "Vm.hpp"
 #include <iostream>
 
 Vm::Vm() {
@@ -202,14 +202,14 @@ void	Vm::dump(){
 }
 
 void	Vm::print_stack(){
-	std::cout << "\033[1m" << "< Stack state (from top to bottom):" << std::endl;
+	std::cout << "\033[1m" << "--- Stack state ---" << std::endl;
 	if (this->_opt_flag & OPT_COLOR)
 		std::for_each(this->_stack.begin(), this->_stack.end(), print_stack_color);
 	else
 	{
 		std::for_each(this->_stack.begin(), this->_stack.end(), print_op);
 	}
-	std::cout << ">" << "\033[0m" << std::endl;
+	std::cout << "\033[1m---" << "\033[0m" << std::endl;
 }
 
 void	Vm::print(){
@@ -222,11 +222,137 @@ void	Vm::exit(){
 	return;
 }
 
+/*
+** Bonus
+*/
+
+void	Vm::min(){
+	IOperand const *	tmp;
+	IOperand const * 	val1;
+	IOperand const * 	val2;
+
+
+	if (this->_stack.size() < 2)
+		throw Vm::StackTooSmallException("runtime_error: not enough elements on stack to use the mod operator");
+	val1 = this->_stack.back();
+	this->_stack.pop_back();
+	val2 = this->_stack.back();
+	this->_stack.pop_back();
+
+	tmp = (*val2).min(*val1);
+	this->_stack.push_back(tmp);
+}
+
+void	Vm::max(){
+	IOperand const *	tmp;
+	IOperand const * 	val1;
+	IOperand const * 	val2;
+
+
+	if (this->_stack.size() < 2)
+		throw Vm::StackTooSmallException("runtime_error: not enough elements on stack to use the mod operator");
+	val1 = this->_stack.back();
+	this->_stack.pop_back();
+	val2 = this->_stack.back();
+	this->_stack.pop_back();
+
+	tmp = (*val2).max(*val1);
+	this->_stack.push_back(tmp);
+}
+
+void	Vm::avg(){
+	IOperand const *	tmp;
+	IOperand const * 	val1;
+	IOperand const * 	val2;
+
+
+	if (this->_stack.size() < 2)
+		throw Vm::StackTooSmallException("runtime_error: not enough elements on stack to use the mod operator");
+	val1 = this->_stack.back();
+	this->_stack.pop_back();
+	val2 = this->_stack.back();
+	this->_stack.pop_back();
+
+	tmp = (*val2).avg(*val1);
+	this->_stack.push_back(tmp);
+}
+
+void	Vm::pow(){
+	IOperand const *	tmp;
+	IOperand const * 	val1;
+	IOperand const * 	val2;
+
+
+	if (this->_stack.size() < 2)
+		throw Vm::StackTooSmallException("runtime_error: not enough elements on stack to use the mod operator");
+	val1 = this->_stack.back();
+	this->_stack.pop_back();
+	val2 = this->_stack.back();
+	this->_stack.pop_back();
+
+	tmp = (*val2).pow(*val1);
+	this->_stack.push_back(tmp);
+}
+
+void	Vm::iand(){
+	IOperand const *	tmp;
+	IOperand const * 	val1;
+	IOperand const * 	val2;
+
+
+	if (this->_stack.size() < 2)
+		throw Vm::StackTooSmallException("runtime_error: not enough elements on stack to use the mul operator");
+	val1 = this->_stack.back();
+	this->_stack.pop_back();
+	val2 = this->_stack.back();
+	this->_stack.pop_back();
+
+	tmp = *val2 & *val1;
+	this->_stack.push_back(tmp);
+}
+
+void	Vm::ior(){
+	IOperand const *	tmp;
+	IOperand const * 	val1;
+	IOperand const * 	val2;
+
+
+	if (this->_stack.size() < 2)
+		throw Vm::StackTooSmallException("runtime_error: not enough elements on stack to use the mul operator");
+	val1 = this->_stack.back();
+	this->_stack.pop_back();
+	val2 = this->_stack.back();
+	this->_stack.pop_back();
+
+	tmp = *val2 | *val1;
+	this->_stack.push_back(tmp);
+}
+
+void	Vm::ixor(){
+	IOperand const *	tmp;
+	IOperand const * 	val1;
+	IOperand const * 	val2;
+
+
+	if (this->_stack.size() < 2)
+		throw Vm::StackTooSmallException("runtime_error: not enough elements on stack to use the mul operator");
+	val1 = this->_stack.back();
+	this->_stack.pop_back();
+	val2 = this->_stack.back();
+	this->_stack.pop_back();
+
+	tmp = *val2 ^ *val1;
+	this->_stack.push_back(tmp);
+}
+
 typedef void (Vm::*opFunc) (void);
 std::map<std::string, opFunc> Vm::opFncMap = {
 	{"pop", &Vm::pop}, {"add", &Vm::add}, {"sub", &Vm::sub},
 	{"mul", &Vm::mul}, {"div", &Vm::div}, {"mod", &Vm::mod},
-	{"dump", &Vm::dump}, {"print", &Vm::print}, {"exit", &Vm::exit}
+	{"dump", &Vm::dump}, {"print", &Vm::print}, {"exit", &Vm::exit},
+	{"min", &Vm::min}, {"max", &Vm::max}, {"avg", &Vm::avg}, {"pow", &Vm::pow},
+	{"iand", &Vm::iand}, {"ior", &Vm::ior}, {"ixor", &Vm::ixor}
+
 };
 typedef void (Vm::*opFuncArg) (eOperandType type, std::string const &value);
 std::map<std::string, opFuncArg> Vm::opFncMapArg = {
