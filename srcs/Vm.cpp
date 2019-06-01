@@ -6,7 +6,7 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 10:11:01 by sflinois          #+#    #+#             */
-/*   Updated: 2019/06/01 15:13:14 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/06/01 16:38:23 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,9 @@ void	Vm::start_vm(std::list<Token> tkn_lst, int opt_flag){
 	this->_opt_flag = opt_flag;
 	while(!this->_tkn_v.empty() && this->_tkn_v.front().cmd != "exit"){
 		if (Vm::opFncMap.find(this->_tkn_v.front().cmd) != Vm::opFncMap.end()){
-			if (this->_opt_flag & OPT_VERB_OPERATOR)
-				std::cout << "\033[1m" << "<Launching cmd: " << this->_tkn_v.front().cmd << ">" << "\033[0m" << std::endl;
 			(this->*(Vm::opFncMap[this->_tkn_v.front().cmd]))();
 		}
 		else if	(Vm::opFncMapArg.find(this->_tkn_v.front().cmd) != Vm::opFncMapArg.end()){
-			if (this->_opt_flag & OPT_VERB_OPERATOR) {
-				std::cout << "\033[1m" << "<Launching cmd: " << this->_tkn_v.front().cmd << " type: " << this->_tkn_v.front().type
-					<< " value: " << this->_tkn_v.front().value << ">" << "\033[0m" << std::endl;
-			}
 			(this->*(Vm::opFncMapArg[this->_tkn_v.front().cmd]))(this->_tkn_v.front().type, this->_tkn_v.front().value);
 		}
 		if (this->_opt_flag & OPT_VERB_STACK)
@@ -84,10 +78,16 @@ void	print_stack_color(IOperand const * op){
 void	Vm::push(eOperandType type, std::string const &value){
 	OperandFactory	facto;
 
+	if (this->_opt_flag & OPT_VERB_OPERATOR) {
+		std::cout << "\033[1m<Launching cmd: push type: " << type;
+		std::cout << " value: " << value << ">\033[0m" << std::endl;
+	}
 	this->_stack.push_back(facto.createOperand(type, value));
 }
 
 void	Vm::pop(){
+	if (this->_opt_flag & OPT_VERB_OPERATOR)
+		std::cout << "\033[1m<Launching cmd: pop>\033[0m" << std::endl;
 	if (this->_stack.size() == 0)
 		throw Vm::EmptyStackException("runtime_error: pop operator used on empty stack");
 	delete this->_stack.back();
@@ -99,7 +99,8 @@ void	Vm::add(){
 	IOperand const * 	val1;
 	IOperand const * 	val2;
 
-
+	if (this->_opt_flag & OPT_VERB_OPERATOR)
+		std::cout << "\033[1m<Launching cmd: add>\033[0m" << std::endl;
 	if (this->_stack.size() < 2)
 		throw Vm::StackTooSmallException("runtime_error: not enough elements on stack to use the add operator");
 	val1 = this->_stack.back();
@@ -124,7 +125,8 @@ void	Vm::sub(){
 	IOperand const * 	val1;
 	IOperand const * 	val2;
 
-
+	if (this->_opt_flag & OPT_VERB_OPERATOR)
+		std::cout << "\033[1m<Launching cmd: sub>\033[0m" << std::endl;
 	if (this->_stack.size() < 2)
 		throw Vm::StackTooSmallException("runtime_error: not enough elements on stack to use the sub operator");
 	val1 = this->_stack.back();
@@ -149,7 +151,8 @@ void	Vm::mul(){
 	IOperand const * 	val1;
 	IOperand const * 	val2;
 
-
+	if (this->_opt_flag & OPT_VERB_OPERATOR)
+		std::cout << "\033[1m<Launching cmd: mul>\033[0m" << std::endl;
 	if (this->_stack.size() < 2)
 		throw Vm::StackTooSmallException("runtime_error: not enough elements on stack to use the mul operator");
 	val1 = this->_stack.back();
@@ -174,7 +177,8 @@ void	Vm::div(){
 	IOperand const * 	val1;
 	IOperand const * 	val2;
 
-
+	if (this->_opt_flag & OPT_VERB_OPERATOR)
+		std::cout << "\033[1m<Launching cmd: div>\033[0m" << std::endl;
 	if (this->_stack.size() < 2)
 		throw Vm::StackTooSmallException("runtime_error: not enough elements on stack to use the div operator");
 	val1 = this->_stack.back();
@@ -199,7 +203,8 @@ void	Vm::mod(){
 	IOperand const * 	val1;
 	IOperand const * 	val2;
 
-
+	if (this->_opt_flag & OPT_VERB_OPERATOR)
+		std::cout << "\033[1m<Launching cmd: mod>\033[0m" << std::endl;
 	if (this->_stack.size() < 2)
 		throw Vm::StackTooSmallException("runtime_error: not enough elements on stack to use the mod operator");
 	val1 = this->_stack.back();
@@ -222,6 +227,10 @@ void	Vm::mod(){
 void	Vm::assertVM(eOperandType type, std::string const &value){
 	OperandFactory	facto;
 
+	if (this->_opt_flag & OPT_VERB_OPERATOR) {
+		std::cout << "\033[1m<Launching cmd: push type: " << type;
+		std::cout << " value: " << value << ">\033[0m" << std::endl;
+	}
 	const IOperand		*tmp = facto.createOperand(type, value);
 	if (this->_stack.back()->getType() == tmp->getType()
 		&& !std::strcmp(this->_stack.back()->toString().c_str(), tmp->toString().c_str()))
@@ -238,6 +247,8 @@ void	Vm::assertVM(eOperandType type, std::string const &value){
 }
 
 void	Vm::dump(){
+	if (this->_opt_flag & OPT_VERB_OPERATOR)
+		std::cout << "\033[1m<Launching cmd: dump>\033[0m" << std::endl;
 	this->_stack.reverse();
 	if (this->_opt_flag & OPT_COLOR)
 		std::for_each(this->_stack.begin(), this->_stack.end(), print_op_color);
@@ -258,6 +269,8 @@ void	Vm::print_stack(){
 void	Vm::print(){
 	std::ostringstream ss;
 
+	if (this->_opt_flag & OPT_VERB_OPERATOR)
+		std::cout << "\033[1m<Launching cmd: print>\033[0m" << std::endl;
 	if (this->_stack.back()->getType() != eOperandType::Int8)
 		throw Vm::AssertFailedException("runtime_error : assert failed, you can only print int8 values");
 	ss << static_cast<char>(std::stoi(this->_stack.back()->toString()));
@@ -265,6 +278,8 @@ void	Vm::print(){
 }
 
 void	Vm::exit(){
+	if (this->_opt_flag & OPT_VERB_OPERATOR)
+		std::cout << "\033[1m<Launching cmd: exit>\033[0m" << std::endl;
 	return;
 }
 
@@ -277,7 +292,8 @@ void	Vm::min(){
 	IOperand const * 	val1;
 	IOperand const * 	val2;
 
-
+	if (this->_opt_flag & OPT_VERB_OPERATOR)
+		std::cout << "\033[1m<Launching cmd: min>\033[0m" << std::endl;
 	if (this->_stack.size() < 2)
 		throw Vm::StackTooSmallException("runtime_error: not enough elements on stack to use the mod operator");
 	val1 = this->_stack.back();
@@ -302,7 +318,8 @@ void	Vm::max(){
 	IOperand const * 	val1;
 	IOperand const * 	val2;
 
-
+	if (this->_opt_flag & OPT_VERB_OPERATOR)
+		std::cout << "\033[1m<Launching cmd: max>\033[0m" << std::endl;
 	if (this->_stack.size() < 2)
 		throw Vm::StackTooSmallException("runtime_error: not enough elements on stack to use the mod operator");
 	val1 = this->_stack.back();
@@ -327,7 +344,8 @@ void	Vm::avg(){
 	IOperand const * 	val1;
 	IOperand const * 	val2;
 
-
+	if (this->_opt_flag & OPT_VERB_OPERATOR)
+		std::cout << "\033[1m<Launching cmd: avg>\033[0m" << std::endl;
 	if (this->_stack.size() < 2)
 		throw Vm::StackTooSmallException("runtime_error: not enough elements on stack to use the mod operator");
 	val1 = this->_stack.back();
@@ -352,7 +370,8 @@ void	Vm::pow(){
 	IOperand const * 	val1;
 	IOperand const * 	val2;
 
-
+	if (this->_opt_flag & OPT_VERB_OPERATOR)
+		std::cout << "\033[1m<Launching cmd: pow>\033[0m" << std::endl;
 	if (this->_stack.size() < 2)
 		throw Vm::StackTooSmallException("runtime_error: not enough elements on stack to use the mod operator");
 	val1 = this->_stack.back();
@@ -377,7 +396,8 @@ void	Vm::iand(){
 	IOperand const * 	val1;
 	IOperand const * 	val2;
 
-
+	if (this->_opt_flag & OPT_VERB_OPERATOR)
+		std::cout << "\033[1m<Launching cmd: iand>\033[0m" << std::endl;
 	if (this->_stack.size() < 2)
 		throw Vm::StackTooSmallException("runtime_error: not enough elements on stack to use the mul operator");
 	val1 = this->_stack.back();
@@ -402,7 +422,8 @@ void	Vm::ior(){
 	IOperand const * 	val1;
 	IOperand const * 	val2;
 
-
+	if (this->_opt_flag & OPT_VERB_OPERATOR)
+		std::cout << "\033[1m<Launching cmd: ior>\033[0m" << std::endl;
 	if (this->_stack.size() < 2)
 		throw Vm::StackTooSmallException("runtime_error: not enough elements on stack to use the mul operator");
 	val1 = this->_stack.back();
@@ -427,7 +448,8 @@ void	Vm::ixor(){
 	IOperand const * 	val1;
 	IOperand const * 	val2;
 
-
+	if (this->_opt_flag & OPT_VERB_OPERATOR)
+		std::cout << "\033[1m<Launching cmd: ixor>\033[0m" << std::endl;
 	if (this->_stack.size() < 2)
 		throw Vm::StackTooSmallException("runtime_error: not enough elements on stack to use the mul operator");
 	val1 = this->_stack.back();
