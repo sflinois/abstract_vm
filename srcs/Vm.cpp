@@ -6,7 +6,7 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 10:11:01 by sflinois          #+#    #+#             */
-/*   Updated: 2019/06/01 14:36:56 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/06/01 15:04:49 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,13 @@ void	Vm::add(){
 	val2 = this->_stack.back();
 	this->_stack.pop_back();
 
-	tmp = *val2 + *val1;
+	try{
+		tmp = *val2 + *val1;
+	}catch(const std::exception& e){
+		delete val1;
+		delete val2;
+		throw e;
+	}
 	delete val1;
 	delete val2;
 	this->_stack.push_back(tmp);
@@ -125,7 +131,13 @@ void	Vm::sub(){
 	val2 = this->_stack.back();
 	this->_stack.pop_back();
 
-	tmp = *val2 - *val1;
+	try{
+		tmp = *val2 - *val1;
+	}catch(const std::exception& e){
+		delete val1;
+		delete val2;
+		throw e;
+	}
 	delete val1;
 	delete val2;
 	this->_stack.push_back(tmp);
@@ -144,7 +156,13 @@ void	Vm::mul(){
 	val2 = this->_stack.back();
 	this->_stack.pop_back();
 
-	tmp = *val2 * *val1;
+	try{
+		tmp = *val2 * *val1;
+	}catch(const std::exception& e){
+		delete val1;
+		delete val2;
+		throw e;
+	}
 	delete val1;
 	delete val2;
 	this->_stack.push_back(tmp);
@@ -163,7 +181,13 @@ void	Vm::div(){
 	val2 = this->_stack.back();
 	this->_stack.pop_back();
 
-	tmp = *val2 / *val1;
+	try{
+		tmp = *val2 / *val1;
+	}catch(const std::exception& e){
+		delete val1;
+		delete val2;
+		throw e;
+	}
 	delete val1;
 	delete val2;
 	this->_stack.push_back(tmp);
@@ -182,7 +206,13 @@ void	Vm::mod(){
 	val2 = this->_stack.back();
 	this->_stack.pop_back();
 
-	tmp = *val2 % *val1;
+	try{
+		tmp = *val2 % *val1;
+	}catch(const std::exception& e){
+		delete val1;
+		delete val2;
+		throw e;
+	}
 	delete val1;
 	delete val2;
 	this->_stack.push_back(tmp);
@@ -251,7 +281,13 @@ void	Vm::min(){
 	val2 = this->_stack.back();
 	this->_stack.pop_back();
 
-	tmp = (*val2).min(*val1);
+	try{
+		tmp = (*val2).min(*val1);
+	}catch(const std::exception& e){
+		delete val1;
+		delete val2;
+		throw e;
+	}
 	delete val1;
 	delete val2;
 	this->_stack.push_back(tmp);
@@ -270,7 +306,13 @@ void	Vm::max(){
 	val2 = this->_stack.back();
 	this->_stack.pop_back();
 
-	tmp = (*val2).max(*val1);
+	try{
+		tmp = (*val2).max(*val1);
+	}catch(const std::exception& e){
+		delete val1;
+		delete val2;
+		throw e;
+	}
 	delete val1;
 	delete val2;
 	this->_stack.push_back(tmp);
@@ -289,7 +331,13 @@ void	Vm::avg(){
 	val2 = this->_stack.back();
 	this->_stack.pop_back();
 
-	tmp = (*val2).avg(*val1);
+	try{
+		tmp = (*val2).avg(*val1);
+	}catch(const std::exception& e){
+		delete val1;
+		delete val2;
+		throw e;
+	}
 	delete val1;
 	delete val2;
 	this->_stack.push_back(tmp);
@@ -308,7 +356,13 @@ void	Vm::pow(){
 	val2 = this->_stack.back();
 	this->_stack.pop_back();
 
-	tmp = (*val2).pow(*val1);
+	try{
+		tmp = (*val2).pow(*val1);
+	}catch(const std::exception& e){
+		delete val1;
+		delete val2;
+		throw e;
+	}
 	delete val1;
 	delete val2;
 	this->_stack.push_back(tmp);
@@ -327,7 +381,13 @@ void	Vm::iand(){
 	val2 = this->_stack.back();
 	this->_stack.pop_back();
 
-	tmp = *val2 & *val1;
+	try{
+		tmp = *val2 & *val1;
+	}catch(const std::exception& e){
+		delete val1;
+		delete val2;
+		throw e;
+	}
 	delete val1;
 	delete val2;
 	this->_stack.push_back(tmp);
@@ -346,7 +406,13 @@ void	Vm::ior(){
 	val2 = this->_stack.back();
 	this->_stack.pop_back();
 
-	tmp = *val2 | *val1;
+	try{
+		tmp = *val2 | *val1;
+	}catch(const std::exception& e){
+		delete val1;
+		delete val2;
+		throw e;
+	}
 	delete val1;
 	delete val2;
 	this->_stack.push_back(tmp);
@@ -365,7 +431,13 @@ void	Vm::ixor(){
 	val2 = this->_stack.back();
 	this->_stack.pop_back();
 
-	tmp = *val2 ^ *val1;
+	try{
+		tmp = *val2 ^ *val1;
+	}catch(const std::exception& e){
+		delete val1;
+		delete val2;
+		throw e;
+	}
 	delete val1;
 	delete val2;
 	this->_stack.push_back(tmp);

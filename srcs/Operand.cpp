@@ -6,7 +6,7 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/08 15:22:06 by sflinois          #+#    #+#             */
-/*   Updated: 2019/06/01 14:04:38 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/06/01 15:04:44 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,7 @@ template<> Operand<int8_t>::Operand(int8_t value) :
 	_precision(Int8), _type(Int8), _value(value)
 {
 	std::ostringstream ss;
-	if (this->_type == eOperandType::Int8)
-		ss << static_cast<int>(this->_value);
-	else
-		ss << this->_value;
+	ss << value;
 	this->_str = std::string(ss.str());
 }
 
@@ -28,10 +25,7 @@ template<> Operand<int16_t>::Operand(int16_t value) :
 	_precision(Int16), _type(Int16), _value(value)
 {
 	std::ostringstream ss;
-	if (this->_type == eOperandType::Int8)
-		ss << static_cast<int>(this->_value);
-	else
-		ss << this->_value;
+	ss << value;
 	this->_str = std::string(ss.str());
 }
 
@@ -39,10 +33,7 @@ template<> Operand<int32_t>::Operand(int32_t value) :
 	_precision(Int32), _type(Int32), _value(value)
 {
 	std::ostringstream ss;
-	if (this->_type == eOperandType::Int8)
-		ss << static_cast<int>(this->_value);
-	else
-		ss << this->_value;
+	ss << value;
 	this->_str = std::string(ss.str());
 }
 
@@ -50,10 +41,7 @@ template<> Operand<float>::Operand(float value) :
 	_precision(Float), _type(Float), _value(value)
 {
 	std::ostringstream ss;
-	if (this->_type == eOperandType::Int8)
-		ss << static_cast<int>(this->_value);
-	else
-		ss << this->_value;
+	ss << value;
 	this->_str = std::string(ss.str());
 }
 
@@ -61,9 +49,6 @@ template<> Operand<double>::Operand(double value) :
 	_precision(Double), _type(Double), _value(value)
 {
 	std::ostringstream ss;
-	if (this->_type == eOperandType::Int8)
-		ss << static_cast<int>(this->_value);
-	else
-		ss << this->_value;
+	ss << value;
 	this->_str = std::string(ss.str());
 }
