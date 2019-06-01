@@ -6,7 +6,7 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 10:11:01 by sflinois          #+#    #+#             */
-/*   Updated: 2019/06/01 13:39:03 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/06/01 14:27:59 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ Vm::Vm() {
 }
 
 Vm::~Vm() {
-
+	for (IOperand const * i : this->_stack)
+		delete i;
 }
 
 void	Vm::start_vm(std::list<Token> tkn_lst, int opt_flag){
@@ -88,6 +89,7 @@ void	Vm::push(eOperandType type, std::string const &value){
 void	Vm::pop(){
 	if (this->_stack.size() == 0)
 		throw Vm::EmptyStackException("runtime_error: pop operator used on empty stack");
+	delete this->_stack.back();
 	this->_stack.pop_back();
 }
 
@@ -105,6 +107,8 @@ void	Vm::add(){
 	this->_stack.pop_back();
 
 	tmp = *val2 + *val1;
+	delete val1;
+	delete val2;
 	this->_stack.push_back(tmp);
 }
 
@@ -122,6 +126,8 @@ void	Vm::sub(){
 	this->_stack.pop_back();
 
 	tmp = *val2 - *val1;
+	delete val1;
+	delete val2;
 	this->_stack.push_back(tmp);
 }
 
@@ -139,6 +145,8 @@ void	Vm::mul(){
 	this->_stack.pop_back();
 
 	tmp = *val2 * *val1;
+	delete val1;
+	delete val2;
 	this->_stack.push_back(tmp);
 }
 
@@ -154,7 +162,10 @@ void	Vm::div(){
 	this->_stack.pop_back();
 	val2 = this->_stack.back();
 	this->_stack.pop_back();
+
 	tmp = *val2 / *val1;
+	delete val1;
+	delete val2;
 	this->_stack.push_back(tmp);
 }
 
@@ -172,6 +183,8 @@ void	Vm::mod(){
 	this->_stack.pop_back();
 
 	tmp = *val2 % *val1;
+	delete val1;
+	delete val2;
 	this->_stack.push_back(tmp);
 }
 
@@ -233,6 +246,8 @@ void	Vm::min(){
 	this->_stack.pop_back();
 
 	tmp = (*val2).min(*val1);
+	delete val1;
+	delete val2;
 	this->_stack.push_back(tmp);
 }
 
@@ -250,6 +265,8 @@ void	Vm::max(){
 	this->_stack.pop_back();
 
 	tmp = (*val2).max(*val1);
+	delete val1;
+	delete val2;
 	this->_stack.push_back(tmp);
 }
 
@@ -267,6 +284,8 @@ void	Vm::avg(){
 	this->_stack.pop_back();
 
 	tmp = (*val2).avg(*val1);
+	delete val1;
+	delete val2;
 	this->_stack.push_back(tmp);
 }
 
@@ -284,6 +303,8 @@ void	Vm::pow(){
 	this->_stack.pop_back();
 
 	tmp = (*val2).pow(*val1);
+	delete val1;
+	delete val2;
 	this->_stack.push_back(tmp);
 }
 
@@ -301,6 +322,8 @@ void	Vm::iand(){
 	this->_stack.pop_back();
 
 	tmp = *val2 & *val1;
+	delete val1;
+	delete val2;
 	this->_stack.push_back(tmp);
 }
 
@@ -318,6 +341,8 @@ void	Vm::ior(){
 	this->_stack.pop_back();
 
 	tmp = *val2 | *val1;
+	delete val1;
+	delete val2;
 	this->_stack.push_back(tmp);
 }
 
@@ -335,6 +360,8 @@ void	Vm::ixor(){
 	this->_stack.pop_back();
 
 	tmp = *val2 ^ *val1;
+	delete val1;
+	delete val2;
 	this->_stack.push_back(tmp);
 }
 

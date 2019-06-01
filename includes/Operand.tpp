@@ -6,7 +6,7 @@
 /*   By: sflinois <sflinois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/07 17:01:05 by sflinois          #+#    #+#             */
-/*   Updated: 2019/06/01 13:40:17 by sflinois         ###   ########.fr       */
+/*   Updated: 2019/06/01 14:30:03 by sflinois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ class Operand : public IOperand
 	//Destructor
 	~Operand()
 	{
-		std::cout << "Destructor" << std::endl;
+		// std::cout << "Destructor" << std::endl;
 	}
 
 	//Getter
@@ -129,12 +129,7 @@ class Operand : public IOperand
 
 	std::string const &toString(void) const
 	{
-		std::ostringstream ss;
-		if (this->_type == eOperandType::Int8)
-			ss << static_cast<int>(this->_value);
-		else
-			ss << this->_value;
-		return (*(new std::string(ss.str())));
+		return (this->_str);
 	}
 
 	/*
@@ -242,6 +237,7 @@ class Operand : public IOperand
 	int _precision;
 	eOperandType _type;
 	T _value;
+	std::string _str;
 };
 
 #endif
